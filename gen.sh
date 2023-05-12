@@ -8,7 +8,7 @@
 # url
 XLDURL="https://publicsuffix.org/list/effective_tld_names.dat"
 
-# socks5 proxy ssh -D, shadowsocks or others
+# http proxy
 PROXY="127.0.0.1:1080"
 
 # curl & openssl cli command path
@@ -57,7 +57,7 @@ cat >> $PAC <<EOF
 } // end of domains
 
 // proxy failover
-var proxy  = 'HTTP $PROXY; DIRECT;'
+var proxy  = 'PROXY $PROXY;'
 var direct = 'DIRECT;'
 
 // function of proxy router
