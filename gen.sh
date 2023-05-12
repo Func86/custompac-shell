@@ -13,8 +13,6 @@ PROXY="127.0.0.1:1080"
 
 # curl & openssl cli command path
 CURL=/usr/bin/curl
-CURLOPT=(-s -x socks5://$PROXY)
-OPENSSL=/usr/bin/openssl
 
 # get current dirname
 DIR=$(cd $(dirname $0); pwd)
@@ -23,7 +21,7 @@ DIR=$(cd $(dirname $0); pwd)
 source $DIR/util.sh
 typeset -A XLD
 typeset -A UNIQ
-for i in $($CURL $CURLOPT $XLDURL | grep -v -e '^\s*$' -e '^/'); do XLD[$i]=1; done
+for i in $($CURL $XLDURL | grep -v -e '^\s*$' -e '^/'); do XLD[$i]=1; done
 
 # output pac file
 PAC=$1
@@ -59,13 +57,11 @@ cat >> $PAC <<EOF
 } // end of domains
 
 // proxy failover
-var proxy  = 'SOCKS5 $PROXY; SOCKS $PROXY; DIRECT;'
+var proxy  = 'HTTP $PROXY; DIRECT;'
 var direct = 'DIRECT;'
 
 // function of proxy router
 function FindProxyForURL(url, host) {
-  // restrict all google related domains to proxy
-  if (/google/i.test(host)) return proxy;
   // recursive detection domains
   do {
     if (domains.hasOwnProperty(host)) return proxy;
