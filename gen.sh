@@ -7,7 +7,6 @@
 
 # url
 XLDURL="https://publicsuffix.org/list/effective_tld_names.dat"
-GFWURL="https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"
 
 # socks5 proxy ssh -D, shadowsocks or others
 PROXY="127.0.0.1:1080"
@@ -50,28 +49,6 @@ EOF
 cat $DIR/custom.txt \
   | grep -v '^\s*$' \
   | sed -e s'/^\s*//'g -e s'/\s*$//'g \
-  | valid
-
-$CURL $CURLOPT $GFWURL \
-  | $OPENSSL base64 -d \
-  | urldecode \
-  | grep -v \
-      -e 'google' \
-      -e '^\s*$' \
-      -e '^[\[!]' \
-  | sed \
-      -e s'/^[@|]*//'g \
-      -e s'/^http[s]*:\/\///'g \
-      -e s'/\/.*$//'g \
-      -e s'/\*.*$//'g \
-      -e s'/^\s*//'g \
-      -e s'/\s*$//'g \
-      -e s'/^\.//'g 2>/dev/null \
-  | grep \
-      -e '\.' \
-  | grep -v \
-      -e '^\s*$' \
-      -e '^!' \
   | valid
 
 DOMAINS=()
